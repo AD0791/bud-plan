@@ -55,7 +55,7 @@ class MyHomePage extends StatelessWidget {
                       ),
                       decoration: BoxDecoration(
                         border: Border.all(
-                          color: Colors.green,
+                          color: Colors.purple,
                           width: 2,
                         ),
                       ),
@@ -63,8 +63,8 @@ class MyHomePage extends StatelessWidget {
                       child: Text('${taction.amount} \$',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                          color: Colors.green 
+                          fontSize: 15,
+                          color: Colors.purple 
                           ),
                       ),
                     ),
@@ -75,10 +75,14 @@ class MyHomePage extends StatelessWidget {
                           taction.title,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 30
+                            fontSize: 25
                           ),  
                         ),
-                        Text(taction.date.toString()),
+                        Text(taction.date.toString(),
+                          style: TextStyle(
+                            color: Colors.grey
+                          ),
+                        ),
                       ],
                     ),
                   ],
