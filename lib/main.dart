@@ -35,19 +35,36 @@ class MyHomePage extends StatelessWidget {
         centerTitle: true,
       ),
       body: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.center ,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[ Container(
             width: double.infinity,
             child: Card(
               color: Colors.blue,
                child: Text("Chart!!! "),
-              elevation: 5,
+              elevation: 15,
             ),
           ),
-          Card(
-            color: Colors.red,
-            child: Text("List of transactions"),
+          Column(
+            children: transactions.map((taction) => 
+              Card(child: Row(
+                  children: <Widget>[
+                    Container(
+                      margin: EdgeInsets.symmetric(
+                        vertical: 10,
+                        horizontal: 15
+                      ),
+                      child: Text('${taction.amount} \$'),
+                    ),
+                    Column(children: <Widget>[
+                        Text(taction.title),
+                        Text(taction.date.toString()),
+                      ],
+                    ),
+                  ],
+                ),
+                elevation: 15,
+              )
+            ).toList(),
           ),
         ],
       ),
