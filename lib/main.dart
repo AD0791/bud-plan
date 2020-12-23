@@ -53,10 +53,31 @@ class MyHomePage extends StatelessWidget {
                         vertical: 10,
                         horizontal: 15
                       ),
-                      child: Text('${taction.amount} \$'),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.green,
+                          width: 2,
+                        ),
+                      ),
+                      padding: EdgeInsets.all(10),
+                      child: Text('${taction.amount} \$',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color: Colors.green 
+                          ),
+                      ),
                     ),
-                    Column(children: <Widget>[
-                        Text(taction.title),
+                    Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                        Text(
+                          taction.title,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 30
+                          ),  
+                        ),
                         Text(taction.date.toString()),
                       ],
                     ),
