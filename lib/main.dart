@@ -1,4 +1,4 @@
-import 'package:bud_plan/transaction.dart';
+import 'package:bud_plan/models/transaction.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 void main() => runApp(MyApp());
