@@ -34,7 +34,7 @@ class MyHomePage extends StatelessWidget {
         centerTitle: true,
       ),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[ Container(
             width: double.infinity,
             child: Card(
@@ -42,6 +42,32 @@ class MyHomePage extends StatelessWidget {
                child: Text("Chart!!! "),
               elevation: 15,
             ),
+          ),
+          Card(
+            child: Container(
+              padding: EdgeInsets.all(10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: <Widget>[
+                  TextField(
+                    decoration: InputDecoration(
+                      labelText: "Title"
+                    ),
+                  ),
+                  TextField(
+                    decoration: InputDecoration(
+                      labelText: "Amount"
+                    ),
+                  ),
+                  FlatButton(
+                    onPressed: (){}, 
+                    child: Text("Add Transaction"),
+                    textColor: Colors.purple
+                  )
+                ],
+              ),
+            ),
+            elevation: 15,  
           ),
           Column(
             children: transactions.map((taction) => 
