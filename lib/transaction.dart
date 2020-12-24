@@ -11,3 +11,40 @@ class Transaction {
     @required this.date
   });
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* bad practice Situation
+
+    # Situation 1
+
+    String inputA;
+    String inputT;
+    >> after we hit the onchange on the textfield
+    onChanged: (value)=> inputA/inputB = value,
+
+    # Situation 2
+    final titleController = TextEditingController();
+    final amountController= TextEditingController();
+    in the text field we use them 
+    controller: titleController/amountController,
+    # we have the same behavior as the previous situation
+*/

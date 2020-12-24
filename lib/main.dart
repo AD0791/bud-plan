@@ -4,6 +4,8 @@ import 'package:intl/intl.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -26,6 +28,11 @@ class MyHomePage extends StatelessWidget {
       date: DateTime.now()
       ),
   ];
+
+  final titleController = TextEditingController();
+  final amountController= TextEditingController();
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,11 +60,13 @@ class MyHomePage extends StatelessWidget {
                     decoration: InputDecoration(
                       labelText: "Title"
                     ),
+                    controller: titleController,
                   ),
                   TextField(
                     decoration: InputDecoration(
                       labelText: "Amount"
                     ),
+                    controller: amountController,
                   ),
                   FlatButton(
                     onPressed: (){}, 
