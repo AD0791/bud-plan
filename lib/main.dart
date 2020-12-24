@@ -1,4 +1,4 @@
-import 'package:bud_plan/widgets/user_transactions.dart';
+import './widgets/user_transactions.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
