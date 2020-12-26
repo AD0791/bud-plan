@@ -13,7 +13,17 @@ class MyApp extends StatelessWidget {
       home: MyHomePage(),
       theme: ThemeData(
         primarySwatch: Colors.purple,
-        accentColor: Colors.amber
+        accentColor: Colors.amber,
+        fontFamily: "Quicksand",
+        appBarTheme: AppBarTheme(
+          textTheme: ThemeData.light().textTheme.copyWith(
+            title: TextStyle(
+              fontFamily: "OpenSans",
+              fontSize: 25,
+              fontWeight: FontWeight.bold
+            )
+          ), 
+        ),
       ),
     );
   }
@@ -64,6 +74,9 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Personal Budget'),
+          //style: TextStyle(
+           // fontFamily: "Open Sans" 
+        //)
         centerTitle: true,
         actions: <Widget>[
           IconButton(
