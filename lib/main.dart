@@ -15,14 +15,17 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.purple,
         accentColor: Colors.amber,
         fontFamily: "Quicksand",
+        textTheme: ThemeData.light().textTheme.copyWith(
+            title: TextStyle(
+                fontFamily: "OpenSans",
+                fontSize: 18,
+                fontWeight: FontWeight.bold)),
         appBarTheme: AppBarTheme(
           textTheme: ThemeData.light().textTheme.copyWith(
-            title: TextStyle(
-              fontFamily: "OpenSans",
-              fontSize: 25,
-              fontWeight: FontWeight.bold
-            )
-          ), 
+              title: TextStyle(
+                  fontFamily: "OpenSans",
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold)),
         ),
       ),
     );
@@ -62,10 +65,9 @@ class _MyHomePageState extends State<MyHomePage> {
         context: ctx,
         builder: (_) {
           return GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: (){},
-            child: NewTransaction(_addNewTransaction)
-          );
+              behavior: HitTestBehavior.opaque,
+              onTap: () {},
+              child: NewTransaction(_addNewTransaction));
         });
   }
 
@@ -74,8 +76,8 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Personal Budget'),
-          //style: TextStyle(
-           // fontFamily: "Open Sans" 
+        //style: TextStyle(
+        // fontFamily: "Open Sans"
         //)
         centerTitle: true,
         actions: <Widget>[
