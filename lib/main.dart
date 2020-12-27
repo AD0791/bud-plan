@@ -1,6 +1,7 @@
 import './widgets/transaction_list.dart';
 import './widgets/new_transaction.dart';
 import './models/transaction.dart';
+import './widgets/chart.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -91,15 +92,8 @@ class _MyHomePageState extends State<MyHomePage> {
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Container(
-              width: double.infinity,
-              child: Card(
-                color: Colors.blue,
-                child: Text("Chart!!! "),
-                elevation: 15,
-              ),
-            ),
+          children: <Widget>[   
+            Chart(_userTransactions),
             TransactionList(_userTransactions),
           ],
         ),
