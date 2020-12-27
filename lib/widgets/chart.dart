@@ -7,19 +7,19 @@ class Chart extends StatelessWidget {
   Chart(this.recentTransactions);
   List<Map<String,Object>> get gTransactionValues {
     return List.generate(7,(index){
-      final weekDay = DateTime.now().substract(
+      final weekDay = DateTime.now().subtract(
         Duration(days: index,)
-      )
+      );
       double totalSum = 0.0;
       for(var i =0;i<recentTransactions.length;i++){
-        if(recenTransactions[i].date.day == weekDay.day &&
-          recenTransactions[i].date.month == weekDay.month &&
-          recenTransactions[i].date.year == weekDay.year
+        if(recentTransactions[i].date.day == weekDay.day &&
+          recentTransactions[i].date.month == weekDay.month &&
+          recentTransactions[i].date.year == weekDay.year
         ){
-          totalSum += recentTransaction[i].amount;
+          totalSum += recentTransactions[i].amount;
         }
       }
-      return {'day': DateFormat.E(weekDay).substring(0,1)
+      return {'day': DateFormat.E().format(weekDay).substring(0,1)
       , 'amount': totalSum};
     });
   }
@@ -27,6 +27,8 @@ class Chart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // to see if the amount increese
+    //print(gTransactionValues);
     return Card(
       elevation: 20,
       margin: EdgeInsets.all(20),
