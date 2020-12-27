@@ -9,11 +9,11 @@ ChartBar(this.label,this.sAmount,this.sAmountPct);
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: <widget>[
+      children: <Widget>[
         Text('\$${sAmount.toStringAsFixed(0)}'),
         SizedBox(height: 5,),
         Container(
-          height: 70,
+          height: 100,
           width: 20,
           child: Stack(
             children: <Widget>[
