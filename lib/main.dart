@@ -62,11 +62,11 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   // the model news
-  void _addNewTransaction(String title, double amount) {
+  void _addNewTransaction(String title, double amount, DateTime chosenDate) {
     final newTaction = Transaction(
         title: title,
         amount: amount,
-        date: DateTime.now(),
+        date: chosenDate,
         id: DateTime.now().toString());
     setState(() {
       _userTransactions.add(newTaction);
