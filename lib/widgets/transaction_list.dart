@@ -5,12 +5,14 @@ import 'package:intl/intl.dart';
 
 class TransactionList extends StatelessWidget {
   final List<Transaction> transactions;
-  TransactionList(this.transactions);
+  final Function deleteTx;
+  TransactionList(this.transactions, this.deleteTx);
+
   @override
   Widget build(BuildContext context) {
     return Container(
         // set the height for  the scrollview situation
-        height: 400,
+        height: 600,
         child: transactions.isEmpty
             ? Column(children: <Widget>[
                 Text(
@@ -90,7 +92,13 @@ class TransactionList extends StatelessWidget {
                         style: Theme.of(context).textTheme.title,
                       ),
                       subtitle: Text(
-                          DateFormat.yMMMd().format(transactions[index].date)),
+                        DateFormat.yMMMd().format(transactions[index].date)),
+                      trailing: IconButton(icon: Icon(Icons.delete),
+                        color: Theme.of(context).errorColor,
+                        onPressed: (){
+                          deleteTx(transactions[index].id);
+                        },
+                      ),
                     ),
                   );
                 },
