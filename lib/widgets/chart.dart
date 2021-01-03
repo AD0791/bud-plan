@@ -36,26 +36,26 @@ class Chart extends StatelessWidget {
   Widget build(BuildContext context) {
     // to see if the amount increese
     //print(gTransactionValues);
-    return Card(
-      elevation: 20,
-      margin: EdgeInsets.all(20),
-      child: Padding(
-        padding: EdgeInsets.all(10),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: gTransactionValues.map((data) {
-            return Flexible(
-              fit: FlexFit.tight,
-              child: ChartBar(
-                  data['day'],
-                  data["amount"],
-                  tSpending == 0.0
-                      ? 0.0
-                      : (data['amount'] as double) / tSpending),
-            );
-          }).toList(),
+    return  Card(
+        elevation: 20,
+        margin: EdgeInsets.all(20),
+        child: Padding(
+          padding: EdgeInsets.all(10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: gTransactionValues.map((data) {
+              return Flexible(
+                fit: FlexFit.tight,
+                child: ChartBar(
+                    data['day'],
+                    data["amount"],
+                    tSpending == 0.0
+                        ? 0.0
+                        : (data['amount'] as double) / tSpending),
+              );
+            }).toList(),
+          ),
         ),
-      ),
-    );
+      );
   }
 }

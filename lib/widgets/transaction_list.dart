@@ -10,10 +10,8 @@ class TransactionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
         // set the height for  the scrollview situation
-        height: 600,
-        child: transactions.isEmpty
+    return transactions.isEmpty
             ? Column(children: <Widget>[
                 Text(
                   "No transaction added yet",
@@ -103,6 +101,6 @@ class TransactionList extends StatelessWidget {
                   );
                 },
                 itemCount: transactions.length,
-              ));
+              );
   }
 }
