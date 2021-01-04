@@ -3,10 +3,21 @@ import './widgets/new_transaction.dart';
 import './models/transaction.dart';
 import './widgets/chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
-void main() => runApp(MyApp());
+// scenario if i want to serve my app with potrait mode only
+void main(){
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitDown,
+    DeviceOrientation.portraitDown
+  ]);
+  runApp(MyBudgetPlanner());
+}
 
-class MyApp extends StatelessWidget {
+//void main() => runApp(MyBudgetPlanner());
+
+class MyBudgetPlanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
