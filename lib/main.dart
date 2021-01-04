@@ -3,19 +3,19 @@ import './widgets/new_transaction.dart';
 import './models/transaction.dart';
 import './widgets/chart.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+//import 'package:flutter/services.dart';
 
 // scenario if i want to serve my app with potrait mode only
-void main(){
-  WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitDown,
-    DeviceOrientation.portraitDown
-  ]);
-  runApp(MyBudgetPlanner());
-}
+// void main(){
+//   WidgetsFlutterBinding.ensureInitialized();
+//   SystemChrome.setPreferredOrientations([
+//     DeviceOrientation.portraitDown,
+//     DeviceOrientation.portraitDown
+//   ]);
+//   runApp(MyBudgetPlanner());
+// }
 
-//void main() => runApp(MyBudgetPlanner());
+void main() => runApp(MyBudgetPlanner());
 
 class MyBudgetPlanner extends StatelessWidget {
   @override
@@ -29,13 +29,12 @@ class MyBudgetPlanner extends StatelessWidget {
         errorColor: Colors.red,
         fontFamily: "Quicksand",
         textTheme: ThemeData.light().textTheme.copyWith(
-          title: TextStyle(
-            fontFamily: "OpenSans",
-            fontSize: 18,
-            fontWeight: FontWeight.bold
-          ),
-          button: TextStyle(color: Colors.white),    
-        ),
+              title: TextStyle(
+                  fontFamily: "OpenSans",
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold),
+              button: TextStyle(color: Colors.white),
+            ),
         appBarTheme: AppBarTheme(
           textTheme: ThemeData.light().textTheme.copyWith(
               title: TextStyle(
@@ -64,13 +63,16 @@ class _MyHomePageState extends State<MyHomePage> {
     //     date: DateTime.now()),
   ];
 
-  List<Transaction> get _recentTx{
-    return _userTransactions.where((element) => element.date.isAfter(
-        DateTime.now().subtract(
-          Duration(days: 7,)
+  bool _showChart = false;
+
+  List<Transaction> get _recentTx {
+    return _userTransactions
+        .where(
+          (element) => element.date.isAfter(DateTime.now().subtract(Duration(
+            days: 7,
+          ))),
         )
-      ),
-    ).toList();
+        .toList();
   }
 
   // the model news
@@ -96,46 +98,81 @@ class _MyHomePageState extends State<MyHomePage> {
         });
   }
 
-  void _deleteTransaction(String id){
+  void _deleteTransaction(String id) {
     setState(() {
-      _userTransactions.removeWhere((tx) => 
-        tx.id == id 
-      );
+      _userTransactions.removeWhere((tx) => tx.id == id);
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+    
     final appBar = AppBar(
-        title: Text('Personal Budget'),
-        //style: TextStyle(
-        // fontFamily: "Open Sans"
-        //)
-        centerTitle: true,
-        actions: <Widget>[
-          IconButton(
-              icon: Icon(
-                Icons.add,
-              ),
-              onPressed: () => _startaddNewTransaction(context))
-        ],
-      );
+      title: Text('Personal Budget'),
+      //style: TextStyle(
+      // fontFamily: "Open Sans"
+      //)
+      centerTitle: true,
+      actions: <Widget>[
+        IconButton(
+            icon: Icon(
+              Icons.add,
+            ),
+            onPressed: () => _startaddNewTransaction(context))
+      ],
+    );
+
+    final transactionListWidget = Container(
+                height: (MediaQuery.of(context).size.height -
+                        appBar.preferredSize.height -
+                        MediaQuery.of(context).padding.top) *
+                    0.65,
+                child: TransactionList(_userTransactions, _deleteTransaction));
+
+
     return Scaffold(
       appBar: appBar,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[   
-            Container(
-              height: (MediaQuery.of(context).size.height
-               - appBar.preferredSize.height
-               - MediaQuery.of(context).padding.top) * 0.35,
-              child: Chart(_recentTx)),
-            Container(
-              height: (MediaQuery.of(context).size.height
-               - appBar.preferredSize.height
-               - MediaQuery.of(context).padding.top) * 0.65,
-              child: TransactionList(_userTransactions, _deleteTransaction)),
+          children: <Widget>[
+            // row en landscape
+            if(isLandscape)Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text("Show Chart"),
+                Switch(
+                    value: _showChart,
+                    onChanged: (bool value) {
+                      setState(() {
+                        _showChart = value;
+                      });
+                    }),
+              ],
+            ),
+            // portraite we have the normal chat
+            if(!isLandscape)Container(
+                height: (MediaQuery.of(context).size.height -
+                        appBar.preferredSize.height -
+                        MediaQuery.of(context).padding.top) *
+                    0.35,
+                child: Chart(_recentTx))
+            ,
+            // portraite we have noemal txlist
+            if(!isLandscape)transactionListWidget,
+            // landscape mode UI
+            if(isLandscape)_showChart ? Container(
+                // height: (MediaQuery.of(context).size.height -
+                //         appBar.preferredSize.height -
+                //         MediaQuery.of(context).padding.top) *
+                //     0.35,
+                height: (MediaQuery.of(context).size.height -
+                        appBar.preferredSize.height -
+                        MediaQuery.of(context).padding.top) *
+                    0.65,
+                child: Chart(_recentTx)):
+            transactionListWidget,
           ],
         ),
       ),

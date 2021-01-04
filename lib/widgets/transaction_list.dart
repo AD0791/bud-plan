@@ -12,7 +12,8 @@ class TransactionList extends StatelessWidget {
   Widget build(BuildContext context) {
         // set the height for  the scrollview situation
     return transactions.isEmpty
-            ? Column(children: <Widget>[
+            ? LayoutBuilder(builder: (ctx,constraints){
+              return Column(children: <Widget>[
                 Text(
                   "No transaction added yet",
                   style: Theme.of(context).textTheme.title,
@@ -21,13 +22,14 @@ class TransactionList extends StatelessWidget {
                   height: 20,
                 ),
                 Container(
-                  height: 300,
+                  height: constraints.maxHeight*0.7,
                   child: Image.asset(
                     "assets/images/image/waiting.png",
                     fit: BoxFit.cover,
                   ),
                 )
-              ])
+              ]);
+            })
             : ListView.builder(
                 itemBuilder: (ctx, index) {
                   // return Card(
