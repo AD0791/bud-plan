@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -15,154 +18,103 @@ class _NewTransactionState extends State<NewTransaction> {
   DateTime _selectedDate;
 
   void _submitData() {
-    if(_amountController.text.isEmpty){
+    if (_amountController.text.isEmpty) {
       return;
     }
 
     final enteredTitle = _titleController.text;
     final enteredAmount = double.parse(_amountController.text);
 
-    if(enteredAmount <= 0 || enteredTitle.isEmpty || _selectedDate == null){
+    if (enteredAmount <= 0 || enteredTitle.isEmpty || _selectedDate == null) {
       return; //block the function execution
     }
 
-    widget.addTransaction(enteredTitle, enteredAmount,_selectedDate);
+    widget.addTransaction(enteredTitle, enteredAmount, _selectedDate);
     Navigator.of(context).pop();
   }
 
-  void _presentDatePicker(){
-    showDatePicker(context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2020), 
-      lastDate: DateTime.now()
-    ).then((dateSelect){
-      if(dateSelect == null){
+  void _presentDatePicker() {
+    showDatePicker(
+            context: context,
+            initialDate: DateTime.now(),
+            firstDate: DateTime(2020),
+            lastDate: DateTime.now())
+        .then((dateSelect) {
+      if (dateSelect == null) {
         return;
       }
       setState(() {
-      _selectedDate= dateSelect; 
+        _selectedDate = dateSelect;
       });
     });
-
   }
-
- 
 
   @override
   Widget build(BuildContext context) {
-
-  // final isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
-
-  // final formUserLandscape = Card(
-  //       child: Container(
-  //         padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom + 20,
-  //           top: 10,
-  //           right: 10,
-  //           left: 10,
-  //         ),
-  //         child: Column(
-  //           crossAxisAlignment: CrossAxisAlignment.end,
-  //           children: <Widget>[
-  //             TextField(
-  //               decoration: InputDecoration(labelText: "Title"),
-  //               controller: _titleController,
-  //               onSubmitted: (_)=>_submitData(),
-  //             ),
-  //             TextField(
-  //               decoration: InputDecoration(labelText: "Amount"),
-  //               controller: _amountController,
-  //               keyboardType: TextInputType.number,
-  //               onSubmitted: (_) => _submitData()
-  //             ),
-  //             Container(
-  //               height: 90,
-  //               child: Row(
-  //                 children: <Widget>[
-  //                   Expanded(
-  //                       child: Text(_selectedDate == null ?"No date Chosen"
-  //                       : 'Picked Date: ${DateFormat.yMd().format(_selectedDate)}'
-  //                     ),
-  //                   ),
-  //                   FlatButton(onPressed: _presentDatePicker,
-  //                     child: Text('Choose Date',
-  //                       style: TextStyle(
-  //                         fontWeight: FontWeight.bold
-  //                       ),
-  //                     ),
-  //                     textColor: Theme.of(context).primaryColor,
-  //                   ),
-  //                 ],
-  //               ),
-  //             ),
-  //             RaisedButton(
-  //               onPressed: _submitData,
-  //               child: Text("Add Transaction"),
-  //               color: Theme.of(context).primaryColor,
-  //               textColor: Theme.of(context).textTheme.button.color,
-  //             ),
-  //           ],
-  //         ),
-  //       ),
-  //       elevation: 15,
-  //     );
-
-final formUser = Card(
-        child: Container(
-          padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom + 10,
-            top: 10,
-            right: 10,
-            left: 10,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: <Widget>[
-              TextField(
-                decoration: InputDecoration(labelText: "Title"),
-                controller: _titleController,
-                onSubmitted: (_)=>_submitData(),
-              ),
-              TextField(
+    final formUser = Card(
+      child: Container(
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom + 10,
+          top: 10,
+          right: 10,
+          left: 10,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: <Widget>[
+            TextField(
+              decoration: InputDecoration(labelText: "Title"),
+              controller: _titleController,
+              onSubmitted: (_) => _submitData(),
+            ),
+            TextField(
                 decoration: InputDecoration(labelText: "Amount"),
                 controller: _amountController,
                 keyboardType: TextInputType.number,
-                onSubmitted: (_) => _submitData()
-              ),
-              Container(
-                height: 90,
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                        child: Text(_selectedDate == null ?"No date Chosen"
-                        : 'Picked Date: ${DateFormat.yMd().format(_selectedDate)}'
-                      ),
-                    ),
-                    FlatButton(onPressed: _presentDatePicker,
-                      child: Text('Choose Date',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold
+                onSubmitted: (_) => _submitData()),
+            Container(
+              height: 90,
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Text(_selectedDate == null
+                        ? "No date Chosen"
+                        : 'Picked Date: ${DateFormat.yMd().format(_selectedDate)}'),
+                  ),
+                  Platform.isIOS
+                      ? CupertinoButton(
+                          onPressed: _presentDatePicker,
+                          child: Text(
+                            'Choose Date',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        )
+                      : FlatButton(
+                          onPressed: _presentDatePicker,
+                          child: Text(
+                            'Choose Date',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          textColor: Theme.of(context).primaryColor,
                         ),
-                      ),
-                      textColor: Theme.of(context).primaryColor,
-                    ),
-                  ],
-                ),
+                ],
               ),
-              RaisedButton(
-                onPressed: _submitData,
-                child: Text("Add Transaction"),
-                color: Theme.of(context).primaryColor,
-                textColor: Theme.of(context).textTheme.button.color,
-              ),
-            ],
-          ),
+            ),
+            RaisedButton(
+              onPressed: _submitData,
+              child: Text("Add Transaction"),
+              color: Theme.of(context).primaryColor,
+              textColor: Theme.of(context).textTheme.button.color,
+            ),
+          ],
         ),
-        elevation: 15,
-      );
-
+      ),
+      elevation: 15,
+    );
 
     return SingleChildScrollView(
-          //child: isPortrait ? formUser : formUserLandscape,
-          child: formUser,
+      //child: isPortrait ? formUser : formUserLandscape,
+      child: formUser,
     );
   }
 }

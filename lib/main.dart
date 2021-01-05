@@ -113,32 +113,30 @@ class _MyHomePageState extends State<MyHomePage> {
     final mediaQuery = MediaQuery.of(context);
     final isLandscape = mediaQuery.orientation == Orientation.landscape;
 
-    final PreferredSizeWidget appBar = Platform.isIOS 
-    ? CupertinoNavigationBar(
-      middle: Text('Personal Budget'),
-      trailing: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          GestureDetector(
-            child: Icon(
-              CupertinoIcons.add
+    final PreferredSizeWidget appBar = Platform.isIOS
+        ? CupertinoNavigationBar(
+            middle: Text('Personal Budget'),
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                GestureDetector(
+                  child: Icon(CupertinoIcons.add),
+                  onTap: () => _startaddNewTransaction(context),
+                ),
+              ],
             ),
-            onTap: () => _startaddNewTransaction(context),
-          ),
-        ],
-      ),
-    )     
-    : AppBar(
-      title: Text('Personal Budget'),
-      centerTitle: true,
-      actions: <Widget>[
-        IconButton(
-            icon: Icon(
-              Icons.add,
-            ),
-            onPressed: () => _startaddNewTransaction(context))
-      ],
-    );
+          )
+        : AppBar(
+            title: Text('Personal Budget'),
+            centerTitle: true,
+            actions: <Widget>[
+              IconButton(
+                  icon: Icon(
+                    Icons.add,
+                  ),
+                  onPressed: () => _startaddNewTransaction(context))
+            ],
+          );
 
     final transactionListWidget = Container(
         height: (mediaQuery.size.height -
@@ -147,8 +145,8 @@ class _MyHomePageState extends State<MyHomePage> {
             0.65,
         child: TransactionList(_userTransactions, _deleteTransaction));
 
-
-    final pageBody = SingleChildScrollView(
+    final pageBody = SafeArea(
+      child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
@@ -157,7 +155,9 @@ class _MyHomePageState extends State<MyHomePage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text("Show Chart"),
+                  Text("Show Chart",
+                    style: Theme.of(context).textTheme.title,
+                  ),
                   Switch.adaptive(
                       activeColor: Theme.of(context).accentColor,
                       value: _showChart,
@@ -194,26 +194,27 @@ class _MyHomePageState extends State<MyHomePage> {
                   : transactionListWidget,
           ],
         ),
-      );
-
-    return Platform.isIOS 
-    ? CupertinoPageScaffold(
-        child: pageBody,
-        navigationBar: appBar,
-
-      )
-      : Scaffold(
-      appBar: appBar,
-      body: pageBody,
-      floatingActionButton: Platform.isIOS
-          ? Container()
-          : FloatingActionButton(
-              child: Icon(
-                Icons.add,
-              ),
-              onPressed: () => _startaddNewTransaction(context),
-            ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      ),
     );
+
+    return Platform.isIOS
+        ? CupertinoPageScaffold(
+            child: pageBody,
+            navigationBar: appBar,
+          )
+        : Scaffold(
+            appBar: appBar,
+            body: pageBody,
+            floatingActionButton: Platform.isIOS
+                ? Container()
+                : FloatingActionButton(
+                    child: Icon(
+                      Icons.add,
+                    ),
+                    onPressed: () => _startaddNewTransaction(context),
+                  ),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerFloat,
+          );
   }
 }
