@@ -6,7 +6,7 @@ class AdaptiveBtn extends StatelessWidget {
   final String text;
   final Function datePickerHandler;
 
-  AdaptiveBtn(this.text,this.datePickerHandler)
+  AdaptiveBtn(this.text,this.datePickerHandler);
 
 
   @override
