@@ -1,9 +1,13 @@
+import 'dart:io';
+
+import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+//import 'package:flutter/services.dart';
+
 import './widgets/transaction_list.dart';
 import './widgets/new_transaction.dart';
 import './models/transaction.dart';
 import './widgets/chart.dart';
-import 'package:flutter/material.dart';
-//import 'package:flutter/services.dart';
 
 // scenario if i want to serve my app with potrait mode only
 // void main(){
@@ -108,12 +112,24 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     final isLandscape = mediaQuery.orientation == Orientation.landscape;
-    
-    final appBar = AppBar(
+
+    final PreferredSizeWidget appBar = Platform.isIOS 
+    ? CupertinoNavigationBar(
+      middle: Text('Personal Budget'),
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          GestureDetector(
+            child: Icon(
+              CupertinoIcons.add
+            ),
+            onTap: () => _startaddNewTransaction(context),
+          ),
+        ],
+      ),
+    )     
+    : AppBar(
       title: Text('Personal Budget'),
-      //style: TextStyle(
-      // fontFamily: "Open Sans"
-      //)
       centerTitle: true,
       actions: <Widget>[
         IconButton(
@@ -125,64 +141,78 @@ class _MyHomePageState extends State<MyHomePage> {
     );
 
     final transactionListWidget = Container(
-                height: (mediaQuery.size.height -
-                        appBar.preferredSize.height -
-                        mediaQuery.padding.top) *
-                    0.65,
-                child: TransactionList(_userTransactions, _deleteTransaction));
+        height: (mediaQuery.size.height -
+                appBar.preferredSize.height -
+                mediaQuery.padding.top) *
+            0.65,
+        child: TransactionList(_userTransactions, _deleteTransaction));
 
 
-    return Scaffold(
-      appBar: appBar,
-      body: SingleChildScrollView(
+    final pageBody = SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             // row en landscape
-            if(isLandscape)Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text("Show Chart"),
-                Switch(
-                    value: _showChart,
-                    onChanged: (bool value) {
-                      setState(() {
-                        _showChart = value;
-                      });
-                    }),
-              ],
-            ),
+            if (isLandscape)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text("Show Chart"),
+                  Switch.adaptive(
+                      activeColor: Theme.of(context).accentColor,
+                      value: _showChart,
+                      onChanged: (bool value) {
+                        setState(() {
+                          _showChart = value;
+                        });
+                      }),
+                ],
+              ),
             // portraite we have the normal chat
-            if(!isLandscape)Container(
-                height: (mediaQuery.size.height -
-                        appBar.preferredSize.height -
-                        mediaQuery.padding.top) *
-                    0.35,
-                child: Chart(_recentTx))
-            ,
+            if (!isLandscape)
+              Container(
+                  height: (mediaQuery.size.height -
+                          appBar.preferredSize.height -
+                          mediaQuery.padding.top) *
+                      0.35,
+                  child: Chart(_recentTx)),
             // portraite we have noemal txlist
-            if(!isLandscape)transactionListWidget,
+            if (!isLandscape) transactionListWidget,
             // landscape mode UI
-            if(isLandscape)_showChart ? Container(
-                // height: (mediaQuery.size.height -
-                //         appBar.preferredSize.height -
-                //         mediaQuery.padding.top) *
-                //     0.35,
-                height: (mediaQuery.size.height -
-                        appBar.preferredSize.height -
-                        mediaQuery.padding.top) *
-                    0.65,
-                child: Chart(_recentTx)):
-            transactionListWidget,
+            if (isLandscape)
+              _showChart
+                  ? Container(
+                      // height: (mediaQuery.size.height -
+                      //         appBar.preferredSize.height -
+                      //         mediaQuery.padding.top) *
+                      //     0.35,
+                      height: (mediaQuery.size.height -
+                              appBar.preferredSize.height -
+                              mediaQuery.padding.top) *
+                          0.65,
+                      child: Chart(_recentTx))
+                  : transactionListWidget,
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(
-          Icons.add,
-        ),
-        onPressed: () => _startaddNewTransaction(context),
-      ),
+      );
+
+    return Platform.isIOS 
+    ? CupertinoPageScaffold(
+        child: pageBody,
+        navigationBar: appBar,
+
+      )
+      : Scaffold(
+      appBar: appBar,
+      body: pageBody,
+      floatingActionButton: Platform.isIOS
+          ? Container()
+          : FloatingActionButton(
+              child: Icon(
+                Icons.add,
+              ),
+              onPressed: () => _startaddNewTransaction(context),
+            ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
